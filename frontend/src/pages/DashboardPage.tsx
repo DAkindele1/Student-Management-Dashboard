@@ -1,0 +1,249 @@
+import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useClasses } from '../hooks/useClasses';
+import { useDashboard } from '../hooks/useDashboard';
+import { useStudents } from '../hooks/useStudents';
+import {
+  ArrowUpIcon,
+  Badge,
+  Card,
+  CalendarIcon,
+  CubeIcon,
+  EmptyState,
+  GridIcon,
+  LoadingState,
+  MoreVerticalIcon,
+  Select,
+  StatCard,
+  UsersIcon,
+} from '../components/ui';
+import type { ClassRecord, StudentRecord } from '../types';
+
+const formatDate = (value: string) => new Date(value).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+
+const monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+const getClassLabel = (classRecord?: ClassRecord) => (classRecord ? `${classRecord.name} - ${classRecord.section}` : 'No class selected');
+
+const buildActivityBars = (students: StudentRecord[]) => {
+  const counts = Array.from({ length: 12 }, () => 0);
+
+  students.forEach((student) => {
+    const month = new Date(student.createdAt).getMonth();
+
+    if (!Number.isNaN(month)) {
+      counts[month] += 1;
+    }
+  });
+
+  const max = Math.max(1, ...counts);
+
+  return counts.map((count) => ({
+    count,
+    height: count === 0 ? 6 : Math.max(18, Math.round((count / max) * 100)),
+  }));
+};
+
+const Gauge = ({ value, className }: { value: number; className: string }) => {
+  const clamped = Math.max(0, Math.min(100, value));
+  const radius = 72;
+  const dashArray = Math.PI * radius;
+  const dashOffset = dashArray - (dashArray * clamped) / 100;
+
+  return (
+    <div className="mx-auto flex w-full max-w-[320px] flex-col items-center">
+      <svg viewBox="0 0 200 140" className="w-full overflow-visible">
+        <path d="M 28 100 A 72 72 0 0 1 172 100" fill="none" className="stroke-slate-200 dark:stroke-slate-700" strokeWidth="14" strokeLinecap="round" />
+        <path
+          d="M 28 100 A 72 72 0 0 1 172 100"
+          fill="none"
+          className="stroke-sky-600 dark:stroke-sky-400"
+          strokeWidth="14"
+          strokeLinecap="round"
+          strokeDasharray={dashArray}
+          strokeDashoffset={dashOffset}
+        />
+      </svg>
+      <div className="-mt-6 text-5xl font-semibold tracking-tight text-slate-900 dark:text-white">{clamped.toFixed(2)}%</div>
+      <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-300">
+        <ArrowUpIcon className="h-4 w-4" />
+        {className}
+      </div>
+    </div>
+  );
+};
+
+const Chart = ({ bars }: { bars: ReturnType<typeof buildActivityBars> }) => (
+  <div className="mt-8">
+    <div className="grid h-[250px] grid-cols-12 items-end gap-4 rounded-2xl bg-slate-50 px-2 py-4 dark:bg-slate-950/70">
+      {bars.map((bar, index) => (
+        <div key={monthLabels[index]} className="flex h-full flex-col items-center justify-end gap-3">
+          <div className="flex h-full w-full items-end rounded-full bg-slate-100/70 dark:bg-white/10">
+            <div
+              className="mx-auto w-8 rounded-full bg-sky-600 shadow-[0_12px_20px_rgba(37,99,235,0.22)] dark:bg-sky-400 dark:shadow-none"
+              title={`${bar.count} enrollments`}
+              style={{ height: `${bar.height}%` }}
+            />
+          </div>
+          <span className="text-sm text-slate-500 dark:text-slate-400">{monthLabels[index]}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+export const DashboardPage = () => {
+  const { data, isLoading, isError } = useDashboard();
+  const { data: classes = [] } = useClasses();
+  const studentsQuery = useStudents({ page: 1, limit: 500, search: '' });
+  const [selectedClassId, setSelectedClassId] = useState('');
+  const activityStudents = studentsQuery.data?.data ?? data?.recentStudents ?? [];
+  const activityBars = useMemo(() => buildActivityBars(activityStudents), [activityStudents]);
+  const selectedClass = useMemo(() => classes.find((classRecord) => classRecord.id === selectedClassId) ?? classes[0], [classes, selectedClassId]);
+  const enrolled = selectedClass?._count?.students ?? 0;
+  const capacity = selectedClass?.capacity ?? 0;
+  const capacityPercent = capacity > 0 ? Math.round((enrolled / capacity) * 100) : 0;
+
+  if (isLoading) {
+    return <LoadingState label="Loading dashboard summary..." />;
+  }
+
+  if (isError || !data) {
+    return <EmptyState title="Dashboard unavailable" description="We could not load the overview data right now." />;
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <StatCard
+          label="Total Students"
+          value={data.totalStudents}
+          helper="All registered students"
+          tone="sky"
+          icon={<UsersIcon className="h-6 w-6" />}
+          trend={{ label: '11.01% increase', direction: 'up' }}
+        />
+        <StatCard
+          label="Total Classes"
+          value={data.totalClasses}
+          helper="Active academic classes"
+          tone="accent"
+          icon={<CubeIcon className="h-6 w-6" />}
+          trend={{ label: '3.45% increase', direction: 'up' }}
+        />
+        <StatCard
+          label="Male Students"
+          value={data.maleStudents}
+          helper="Currently enrolled"
+          tone="slate"
+          icon={<GridIcon className="h-6 w-6" />}
+          trend={{ label: '9.05% decrease', direction: 'down' }}
+        />
+        <StatCard
+          label="Female Students"
+          value={data.femaleStudents}
+          helper="Currently enrolled"
+          tone="amber"
+          icon={<CalendarIcon className="h-6 w-6" />}
+          trend={{ label: '7.4% increase', direction: 'up' }}
+        />
+      </div>
+
+      <div className="grid gap-6 xl:grid-cols-[minmax(0,1.4fr)_minmax(340px,0.8fr)]">
+        <Card className="overflow-hidden p-6">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <h2 className="text-2xl font-semibold tracking-tight text-slate-900">Monthly Activity</h2>
+              <p className="mt-2 text-sm text-slate-500">Enrollment activity across the current academic year.</p>
+            </div>
+          </div>
+
+          <Chart bars={activityBars} />
+        </Card>
+
+        <Card className="overflow-hidden">
+          <div className="flex flex-col gap-4 px-6 pt-6 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <h2 className="text-2xl font-semibold tracking-tight text-slate-900">Class Capacity</h2>
+              <p className="mt-2 text-sm text-slate-500">Select a class to view its current fill rate.</p>
+            </div>
+            <div className="w-full sm:w-56">
+              <Select value={selectedClass?.id ?? ''} onChange={(event) => setSelectedClassId(event.target.value)} disabled={classes.length === 0}>
+                {classes.length === 0 ? <option value="">No classes</option> : null}
+                {classes.map((classRecord) => (
+                  <option key={classRecord.id} value={classRecord.id}>
+                    {getClassLabel(classRecord)}
+                  </option>
+                ))}
+              </Select>
+            </div>
+          </div>
+
+          <div className="px-6 pb-6 pt-10">
+            <Gauge value={capacityPercent} className={getClassLabel(selectedClass)} />
+            <p className="mx-auto mt-5 max-w-sm text-center text-sm leading-7 text-slate-500">
+              {enrolled} of {capacity} seats are filled in this class.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-3 divide-x divide-slate-200 border-t border-slate-200 bg-slate-50/80 dark:divide-white/10 dark:border-white/10 dark:bg-slate-950/70">
+            <div className="px-4 py-5 text-center">
+              <div className="text-sm text-slate-500">Capacity</div>
+              <div className="mt-2 text-2xl font-semibold text-slate-900">{capacity}</div>
+            </div>
+            <div className="px-4 py-5 text-center">
+              <div className="text-sm text-slate-500">Enrolled</div>
+              <div className="mt-2 text-2xl font-semibold text-slate-900">{enrolled}</div>
+            </div>
+            <div className="px-4 py-5 text-center">
+              <div className="text-sm text-slate-500">Open Seats</div>
+              <div className="mt-2 text-2xl font-semibold text-slate-900">{Math.max(0, capacity - enrolled)}</div>
+            </div>
+          </div>
+        </Card>
+      </div>
+
+      <Card className="overflow-hidden">
+        <div className="flex flex-col gap-4 border-b border-slate-200 px-6 py-5 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h2 className="text-2xl font-semibold tracking-tight text-slate-900">Recent Students</h2>
+            <p className="mt-2 text-sm text-slate-500">Latest enrolments across the system</p>
+          </div>
+          <Link to="/students" className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-800 transition hover:border-slate-300 hover:bg-slate-50">
+            View all students
+          </Link>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-slate-200">
+            <thead className="bg-slate-50/80 text-left text-xs uppercase tracking-[0.18em] text-slate-500">
+              <tr>
+                <th className="px-6 py-4">Student</th>
+                <th className="px-6 py-4">Email</th>
+                <th className="px-6 py-4">Class</th>
+                <th className="px-6 py-4">Gender</th>
+                <th className="px-6 py-4">Created</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100 bg-white">
+              {data.recentStudents.map((student) => (
+                <tr key={student.id} className="hover:bg-slate-50">
+                  <td className="px-6 py-4 font-medium text-slate-900">
+                    <Link to={`/students/${student.id}`} className="hover:text-sky-600">
+                      {student.fullName}
+                    </Link>
+                  </td>
+                  <td className="px-6 py-4 text-slate-600">{student.email}</td>
+                  <td className="px-6 py-4 text-slate-600">{student.class.name} - {student.class.section}</td>
+                  <td className="px-6 py-4">
+                    <Badge tone={student.gender === 'MALE' ? 'sky' : 'accent'}>{student.gender}</Badge>
+                  </td>
+                  <td className="px-6 py-4 text-slate-600">{formatDate(student.createdAt)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Card>
+    </div>
+  );
+};
