@@ -160,7 +160,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export const Button = ({ variant = 'primary', size = 'md', className = '', ...props }: ButtonProps) => {
   const variants: Record<NonNullable<ButtonProps['variant']>, string> = {
-    primary: 'bg-sky-600 text-white shadow-[0_16px_30px_rgba(37,99,235,0.18)] hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-400',
+    primary: 'bg-sky-600 text-white hover:bg-sky-700 dark:bg-sky-500 dark:hover:bg-sky-400',
     secondary: 'border border-slate-200 bg-white text-slate-800 hover:border-slate-300 hover:bg-slate-50 dark:border-white/10 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800',
     ghost: 'bg-transparent text-slate-700 hover:bg-slate-100/80 dark:text-slate-200 dark:hover:bg-white/10',
     danger: 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-400',
@@ -180,7 +180,7 @@ export const Button = ({ variant = 'primary', size = 'md', className = '', ...pr
 };
 
 export const Card = ({ className = '', children }: { className?: string; children: ReactNode }) => (
-  <div className={`rounded-[20px] border border-slate-200/80 bg-white shadow-[0_24px_80px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-slate-900 dark:shadow-none ${className}`}>{children}</div>
+  <div className={`rounded-[20px] border border-slate-200/80 bg-white dark:border-white/10 dark:bg-slate-900 ${className}`}>{children}</div>
 );
 
 export const Input = ({ className = '', ...props }: InputHTMLAttributes<HTMLInputElement>) => (
@@ -283,7 +283,7 @@ export const EmptyState = ({ title, description, action }: { title: string; desc
 );
 
 export const Pagination = ({ page, totalPages, onPageChange }: { page: number; totalPages: number; onPageChange: (page: number) => void }) => (
-  <div className="flex flex-wrap items-center justify-between gap-3 rounded-[24px] border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600 shadow-[0_16px_40px_rgba(15,23,42,0.06)]">
+  <div className="flex flex-wrap items-center justify-between gap-3 rounded-[24px] border border-slate-200 bg-white px-4 py-3 text-sm text-slate-600">
     <div>
       Page {page} of {totalPages}
     </div>
@@ -305,7 +305,7 @@ export const Modal = ({ open, title, description, onClose, children, maxWidth = 
 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 px-4 py-8 backdrop-blur-sm" onClick={onClose}>
-      <div className={`w-full ${maxWidth} rounded-[28px] bg-white p-6 shadow-[0_32px_100px_rgba(15,23,42,0.22)]`} onClick={(event) => event.stopPropagation()}>
+      <div className={`w-full ${maxWidth} rounded-[28px] bg-white p-6`} onClick={(event) => event.stopPropagation()}>
         <div className="flex items-start justify-between gap-4">
           <div>
             <h2 className="text-xl font-semibold text-slate-900">{title}</h2>

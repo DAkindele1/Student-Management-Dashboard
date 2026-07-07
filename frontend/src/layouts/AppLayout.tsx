@@ -80,7 +80,7 @@ export const AppLayout = () => {
   const sidebarContent = (collapsed = false) => (
     <>
       <Link to="/dashboard" className={`flex items-center gap-3 rounded-[24px] px-2 py-2 ${collapsed ? 'justify-center' : ''}`} onClick={closeMobileNav}>
-        <div className="grid h-12 w-12 place-items-center rounded-2xl bg-[#4f6df5] text-white shadow-[0_16px_30px_rgba(79,109,245,0.3)]">
+        <div className="grid h-12 w-12 place-items-center rounded-2xl bg-[#4f6df5] text-white">
           <GridIcon className="h-6 w-6" />
         </div>
         <div className={collapsed ? 'hidden' : ''}>
@@ -130,7 +130,7 @@ export const AppLayout = () => {
         {isMobileNavOpen ? (
           <div className="fixed inset-0 z-40 lg:hidden" role="dialog" aria-modal="true" aria-label="Navigation">
             <button type="button" className="absolute inset-0 bg-slate-950/50" aria-label="Close navigation" onClick={closeMobileNav} />
-            <aside className="relative flex h-full w-[min(82vw,320px)] flex-col border-r border-slate-200 bg-white px-5 py-6 shadow-[0_24px_80px_rgba(15,23,42,0.26)] dark:border-white/10 dark:bg-slate-950">
+            <aside className="relative flex h-full w-[min(82vw,320px)] flex-col border-r border-slate-200 bg-white px-5 py-6 dark:border-white/10 dark:bg-slate-950">
               {sidebarContent(false)}
             </aside>
           </div>
@@ -139,13 +139,13 @@ export const AppLayout = () => {
         <div className="flex min-w-0 flex-1 flex-col">
           <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/85 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/85">
             <div className="flex items-center gap-4 px-4 py-4 sm:px-6 lg:px-8">
-              <button type="button" className="grid h-14 w-14 place-items-center rounded-2xl border border-slate-200 bg-white text-slate-600 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-slate-200 lg:hidden" aria-label="Open navigation" onClick={() => setIsMobileNavOpen(true)}>
+              <button type="button" className="grid h-14 w-14 place-items-center rounded-2xl border border-slate-200 bg-white text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 lg:hidden" aria-label="Open navigation" onClick={() => setIsMobileNavOpen(true)}>
                 <MenuIcon />
               </button>
 
               <button
                 type="button"
-                className="hidden h-12 w-12 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm transition hover:bg-slate-50 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10 lg:inline-flex"
+                className="hidden h-12 w-12 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:bg-slate-50 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10 lg:inline-flex"
                 aria-label={isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
                 onClick={() => setIsSidebarCollapsed((current) => !current)}
               >
@@ -157,14 +157,14 @@ export const AppLayout = () => {
               </div>
 
               <div className="ml-auto flex min-w-0 items-center justify-end gap-3">
-                <button type="button" className="hidden h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-white sm:inline-flex" aria-label="Toggle theme" onClick={toggleTheme}>
+                <button type="button" className="hidden h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-white sm:inline-flex" aria-label="Toggle theme" onClick={toggleTheme}>
                   {isDarkMode ? <SunIcon /> : <MoonIcon />}
                 </button>
 
                 <div className="relative" ref={notificationsRef}>
                   <button
                     type="button"
-                    className="relative hidden h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-slate-200 sm:inline-flex"
+                    className="relative hidden h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 sm:inline-flex"
                     aria-label="Notifications"
                     aria-haspopup="menu"
                     aria-expanded={isNotificationsOpen}
@@ -175,7 +175,7 @@ export const AppLayout = () => {
                   </button>
 
                   {isNotificationsOpen ? (
-                    <div className="absolute right-0 mt-3 w-80 rounded-3xl border border-slate-200 bg-white p-2 shadow-[0_24px_80px_rgba(15,23,42,0.18)] dark:border-white/10 dark:bg-slate-900" role="menu">
+                    <div className="absolute right-0 mt-3 w-80 rounded-3xl border border-slate-200 bg-white p-2 dark:border-white/10 dark:bg-slate-900" role="menu">
                       <div className="border-b border-slate-100 px-4 py-3 dark:border-white/10">
                         <div className="text-sm font-semibold text-slate-900 dark:text-white">Recent changes</div>
                         <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">Latest database activity</div>
@@ -200,7 +200,7 @@ export const AppLayout = () => {
                 <div className="relative" ref={profileMenuRef}>
                   <button
                     type="button"
-                    className="flex items-center gap-3 rounded-full border border-slate-200 bg-white px-2 py-1.5 pr-4 shadow-sm transition hover:border-slate-300 dark:border-white/10 dark:bg-white/5 dark:hover:border-white/20"
+                    className="flex items-center gap-3 rounded-full border border-slate-200 bg-white px-2 py-1.5 pr-4 transition hover:border-slate-300 dark:border-white/10 dark:bg-white/5 dark:hover:border-white/20"
                     aria-label="User menu"
                     aria-haspopup="menu"
                     aria-expanded={isProfileMenuOpen}
@@ -217,7 +217,7 @@ export const AppLayout = () => {
                   </button>
 
                   {isProfileMenuOpen ? (
-                    <div className="absolute right-0 mt-3 w-72 rounded-3xl border border-slate-200 bg-white p-2 shadow-[0_24px_80px_rgba(15,23,42,0.18)] dark:border-white/10 dark:bg-slate-900" role="menu">
+                    <div className="absolute right-0 mt-3 w-72 rounded-3xl border border-slate-200 bg-white p-2 dark:border-white/10 dark:bg-slate-900" role="menu">
                       <div className="border-b border-slate-100 px-4 py-3 dark:border-white/10">
                         <div className="text-sm font-semibold text-slate-900 dark:text-white">{user?.name ?? 'Admin'}</div>
                         <div className="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">{user?.email ?? 'admin@school.com'}</div>
