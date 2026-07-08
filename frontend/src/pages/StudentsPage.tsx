@@ -40,6 +40,50 @@ export const StudentsPage = () => {
   const totalPages = meta?.totalPages ?? 1;
 
   const activeFormStudent = useMemo(() => studentToEdit, [studentToEdit]);
+  const exportToCsv = () => {
+    const headers = [
+      'Student',
+      'Email',
+      'Phone',
+      'Gender',
+      'Class',
+    ];
+
+    const rows = sortedStudents.map((student) => [
+      student.fullName,
+      student.email,
+      student.phone,
+      student.gender,
+      `${student.class.name} - ${student.class.section}`,
+    ]);
+
+    const csv = [
+      headers,
+      ...rows,
+    ]
+      .map((row) =>
+        row
+          .map((value) => `"${String(value).replace(/"/g, '""')}"`)
+          .join(',')
+      )
+      .join('\n');
+
+    const blob = new Blob([csv], {
+      type: 'text/csv;charset=utf-8;',
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `students-${new Date().toISOString().split('T')[0]}.csv`;
+
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
   const handleSearch = () => {
     setPage(1);
@@ -161,6 +205,7 @@ const handleSort = (key: string) => {
           <Input value={searchInput} onChange={(event) => setSearchInput(event.target.value)} placeholder="Search by name, email, or phone" onKeyDown={(event) => event.key === 'Enter' && handleSearch()} />
           <Button variant="secondary" onClick={handleSearch}>Search</Button>
           <Button onClick={() => setIsCreateOpen(true)}>Add Student</Button>
+          <Button variant="secondary" onClick={exportToCsv}>Export CSV</Button>
         </div>
       </div>
 
