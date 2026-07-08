@@ -176,14 +176,14 @@ export const AppLayout = () => {
 
                   {isNotificationsOpen ? (
                     <div className="absolute right-0 mt-3 w-80 rounded-3xl border border-slate-200 bg-white p-2 dark:border-white/10 dark:bg-slate-900" role="menu">
-                      <div className="border-b border-slate-100 px-4 py-3 dark:border-white/10">
+                      <div className="border-b border-slate-100 px-3 py-2.5 dark:border-white/10">
                         <div className="text-sm font-semibold text-slate-900 dark:text-white">Recent changes</div>
                         <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">Latest database activity</div>
                       </div>
                       {recentChanges.length > 0 ? (
                         <div className="max-h-80 overflow-y-auto py-2">
                           {recentChanges.map((change) => (
-                            <div key={change.id} className="rounded-2xl px-4 py-3 text-sm hover:bg-slate-50 dark:hover:bg-white/5" role="menuitem">
+                            <div key={change.id} className="rounded-xl px-3 py-2.5 text-sm transition hover:bg-slate-50 dark:hover:bg-white/5 sm:rounded-2xl sm:px-4 sm:py-3" role="menuitem">
                               <div className="font-medium text-slate-900 dark:text-white">{change.label}</div>
                               <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">{change.detail}</div>
                               <div className="mt-1 text-xs text-slate-400">{new Date(change.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</div>
