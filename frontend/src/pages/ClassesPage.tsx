@@ -57,7 +57,7 @@ export const ClassesPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-6 shadow-soft lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-6 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h2 className="text-2xl font-semibold text-slate-900">Classes</h2>
           <p className="mt-1 text-sm text-slate-500">Create and maintain the class roster structure.</p>

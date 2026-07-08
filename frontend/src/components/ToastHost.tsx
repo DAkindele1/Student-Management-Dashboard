@@ -8,7 +8,7 @@ export const ToastHost = () => {
       {toasts.map((toast) => (
         <button
           key={toast.id}
-          className={`rounded-2xl border px-4 py-3 text-left shadow-soft transition hover:-translate-y-0.5 ${
+          className={`rounded-2xl border px-4 py-3 text-left transition hover:-translate-y-0.5 ${
             toast.tone === 'success'
               ? 'border-emerald-200 bg-emerald-50 text-emerald-800'
               : toast.tone === 'error'

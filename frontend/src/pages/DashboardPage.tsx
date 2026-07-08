@@ -80,7 +80,7 @@ const Chart = ({ bars }: { bars: ReturnType<typeof buildActivityBars> }) => (
         <div key={monthLabels[index]} className="flex h-full flex-col items-center justify-end gap-3">
           <div className="flex h-full w-full items-end rounded-full bg-slate-100/70 dark:bg-white/10">
             <div
-              className="mx-auto w-8 rounded-full bg-sky-600 shadow-[0_12px_20px_rgba(37,99,235,0.22)] dark:bg-sky-400 dark:shadow-none"
+              className="mx-auto w-8 rounded-full bg-sky-600 dark:bg-sky-400"
               title={`${bar.count} enrollments`}
               style={{ height: `${bar.height}%` }}
             />

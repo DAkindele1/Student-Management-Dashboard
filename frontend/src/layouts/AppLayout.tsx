@@ -104,7 +104,7 @@ export const AppLayout = () => {
                   className={({ isActive }) =>
                     `flex items-center gap-3 px-3 py-3 text-[15px] font-medium transition ${collapsed ? 'justify-center' : ''} ${
                       isActive
-                        ? 'rounded-xl bg-sky-100 text-sky-700 shadow-none dark:bg-sky-500/15 dark:text-sky-300'
+                        ? 'rounded-xl bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300'
                         : 'rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-white/5 dark:hover:text-white'
                     }`
                   }
