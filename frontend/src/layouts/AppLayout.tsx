@@ -164,7 +164,7 @@ export const AppLayout = () => {
                 <div className="relative" ref={notificationsRef}>
                   <button
                     type="button"
-                    className="hidden flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 sm:h-12 sm:w-12 dark:border-white/10 dark:bg-white/5 dark:text-white"
+                    className="hidden flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 sm:h-12 sm:w-12 dark:border-white/10 dark:bg-white/5 dark:text-white sm:inline-flex"
                     aria-label="Notifications"
                     aria-haspopup="menu"
                     aria-expanded={isNotificationsOpen}
