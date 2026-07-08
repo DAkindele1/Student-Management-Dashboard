@@ -46,7 +46,7 @@ const buildActivityData = (students: StudentRecord[]) => {
 
   return monthLabels.map((month, index) => ({
     month,
-    enrollments: counts[index],
+    Enrollments: counts[index],
   }));
 };
 
