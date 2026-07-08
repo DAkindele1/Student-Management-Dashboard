@@ -6,6 +6,27 @@ import { useToast } from '../hooks/useToast';
 import { Badge, Button, Card, ConfirmDialog, EmptyState, Input, LoadingState, Modal, Pagination } from '../components/ui';
 import { StudentForm, type StudentFormValues } from '../features/students/StudentForm';
 import type { StudentRecord } from '../types';
+import { ChevronUp, ChevronDown } from 'lucide-react';
+
+type SortDirection = 'asc' | 'desc';
+
+const [sortConfig, setSortConfig] = useState<{
+  key: string;
+  direction: SortDirection;
+}>({
+  key: 'fullName',
+  direction: 'asc',
+});
+
+const handleSort = (key: string) => {
+  setSortConfig((prev) => ({
+    key,
+    direction:
+      prev.key === key && prev.direction === 'asc'
+        ? 'desc'
+        : 'asc',
+  }));
+};
 
 const PAGE_SIZE = 8;
 
@@ -77,6 +98,59 @@ export const StudentsPage = () => {
     }
   };
 
+  const sortedStudents = useMemo(() => {
+  const data = [...students];
+
+  data.sort((a, b) => {
+    let aValue: any;
+    let bValue: any;
+
+    switch (sortConfig.key) {
+      case 'fullName':
+        aValue = a.fullName;
+        bValue = b.fullName;
+        break;
+
+      case 'email':
+        aValue = a.email;
+        bValue = b.email;
+        break;
+
+      case 'phone':
+        aValue = a.phone;
+        bValue = b.phone;
+        break;
+
+      case 'gender':
+        aValue = a.gender;
+        bValue = b.gender;
+        break;
+
+      case 'class':
+        aValue = `${a.class.name} ${a.class.section}`;
+        bValue = `${b.class.name} ${b.class.section}`;
+        break;
+
+      default:
+        return 0;
+    }
+
+    if (typeof aValue === 'string') {
+      const result = aValue.localeCompare(bValue);
+
+      return sortConfig.direction === 'asc'
+        ? result
+        : -result;
+    }
+
+    return sortConfig.direction === 'asc'
+      ? aValue - bValue
+      : bValue - aValue;
+  });
+
+  return data;
+}, [students, sortConfig]);
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4 rounded-3xl border border-slate-200 bg-white p-6 lg:flex-row lg:items-center lg:justify-between">
@@ -105,16 +179,71 @@ export const StudentsPage = () => {
             <table className="min-w-full divide-y divide-slate-200">
               <thead className="bg-slate-50 text-left text-xs uppercase tracking-[0.18em] text-slate-500">
                 <tr>
-                  <th className="px-6 py-4">Student</th>
-                  <th className="px-6 py-4">Email</th>
-                  <th className="px-6 py-4">Phone</th>
-                  <th className="px-6 py-4">Gender</th>
-                  <th className="px-6 py-4">Class</th>
+                  <th className="px-6 py-4">
+                    <button
+                      onClick={() => handleSort('fullName')}
+                      className="flex items-center gap-1 font-semibold hover:text-sky-600"
+                    >
+                      Student
+                      {sortConfig.key === 'fullName' &&
+                        (sortConfig.direction === 'asc'
+                          ? <ChevronUp size={14} />
+                          : <ChevronDown size={14} />)}
+                    </button>
+                  </th>
+                  <th className="px-6 py-4">                   
+                    <button
+                      onClick={() => handleSort('email')}
+                      className="flex items-center gap-1 font-semibold hover:text-sky-600"
+                    >
+                      Email
+                      {sortConfig.key === 'email' &&
+                        (sortConfig.direction === 'asc'
+                          ? <ChevronUp size={14} />
+                          : <ChevronDown size={14} />)}
+                    </button>
+                  </th>
+                  <th className="px-6 py-4">                   
+                    <button
+                      onClick={() => handleSort('phone')}
+                      className="flex items-center gap-1 font-semibold hover:text-sky-600"
+                    >
+                      Phone
+                      {sortConfig.key === 'phone' &&
+                        (sortConfig.direction === 'asc'
+                          ? <ChevronUp size={14} />
+                          : <ChevronDown size={14} />)}
+                    </button>
+                  </th>
+                  <th className="px-6 py-4">                   
+                    <button
+                      onClick={() => handleSort('gender')}
+                      className="flex items-center gap-1 font-semibold hover:text-sky-600"
+                    >
+                      Gender
+                      {sortConfig.key === 'gender' &&
+                        (sortConfig.direction === 'asc'
+                          ? <ChevronUp size={14} />
+                          : <ChevronDown size={14} />)}
+                    </button>
+                  </th>
+                  <th className="px-6 py-4">                   
+                    <button
+                      onClick={() => handleSort('class.name')}
+                      className="flex items-center gap-1 font-semibold hover:text-sky-600"
+                    >
+                      Class
+                      {sortConfig.key === 'class.name' &&
+                        (sortConfig.direction === 'asc'
+                          ? <ChevronUp size={14} />
+                          : <ChevronDown size={14} />)}
+                    </button>
+                  </th>
                   <th className="px-6 py-4 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 bg-white">
-                {students.map((student) => (
+                {sortedStudents.map((student) => (
                   <tr key={student.id} className="hover:bg-slate-50">
                     <td className="px-6 py-4 font-medium text-slate-900">
                       <Link className="hover:text-sky-600" to={`/students/${student.id}`}>{student.fullName}</Link>
