@@ -100,6 +100,22 @@ export const GridIcon = (props: IconProps) => (
   </Icon>
 );
 
+export const MaleIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <circle cx="9" cy="15" r="5" />
+    <path d="M12.5 11.5L20 4" />
+    <path d="M15 4h5v5" />
+  </Icon>
+);
+
+export const FemaleIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <circle cx="12" cy="8" r="5" />
+    <path d="M12 13v8" />
+    <path d="M9 18h6" />
+  </Icon>
+);
+
 export const LayoutIcon = (props: IconProps) => (
   <Icon {...props}>
     <rect x="3" y="3" width="18" height="18" rx="3" />

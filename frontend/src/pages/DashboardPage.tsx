@@ -8,7 +8,9 @@ import {
   Card,
   CubeIcon,
   EmptyState,
+  FemaleIcon,
   LoadingState,
+  MaleIcon,
   Select,
   StatCard,
   UsersIcon,
@@ -23,7 +25,6 @@ import {
   Tooltip,
 } from "recharts";
 import type { ClassRecord, StudentRecord } from '../types';
-import {Mars, Venus} from "lucide-react";
 
 const formatDate = (value: string) => new Date(value).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
 
@@ -205,14 +206,14 @@ export const DashboardPage = () => {
           value={data.maleStudents}
           helper="Currently enrolled"
           tone="slate"
-          icon={<Mars className="h-6 w-6" />}
+          icon={<MaleIcon className="h-6 w-6" />}
         />
         <StatCard
           label="Female Students"
           value={data.femaleStudents}
           helper="Currently enrolled"
           tone="amber"
-          icon={<Venus className="h-6 w-6" />}
+          icon={<FemaleIcon className="h-6 w-6" />}
         />
       </div>
 
