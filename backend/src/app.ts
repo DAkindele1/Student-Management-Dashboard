@@ -8,7 +8,7 @@ export const createApp = () => {
 
   app.use(
     cors({
-      origin: process.env.CORS_ORIGIN?.split(',').map((origin) => origin.trim()) ?? '*',
+      origin: process.env.CORS_ORIGIN,
       credentials: true,
     }),
   );
