@@ -203,13 +203,13 @@ export const DashboardPage = () => {
           label="Male Students"
           value={data.maleStudents}
           helper="Currently enrolled"
-          icon={<UsersIcon className="h-6 w-6" />}
+          icon={<MaleIcon className="h-6 w-6" />}
         />
         <StatCard
           label="Female Students"
           value={data.femaleStudents}
           helper="Currently enrolled"
-          icon={<UsersIcon className="h-6 w-6" />}
+          icon={<FemaleIcon className="h-6 w-6" />}
         />
       </div>
 
