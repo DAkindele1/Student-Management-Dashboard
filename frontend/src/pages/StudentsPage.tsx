@@ -228,11 +228,11 @@ const handleSort = (key: string) => {
                   </th>
                   <th className="px-6 py-4">                   
                     <button
-                      onClick={() => handleSort('class.name')}
+                      onClick={() => handleSort('class')}
                       className="flex items-center gap-1 font-semibold hover:text-sky-600"
                     >
                       Class
-                      {sortConfig.key === 'class.name' &&
+                      {sortConfig.key === 'class' &&
                         (sortConfig.direction === 'asc'
                           ? <ChevronUp size={14} />
                           : <ChevronDown size={14} />)}
