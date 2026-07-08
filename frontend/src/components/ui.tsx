@@ -231,14 +231,12 @@ export const StatCard = ({
   helper,
   tone = 'sky',
   icon,
-  trend,
 }: {
   label: string;
   value: string | number;
   helper?: string;
   tone?: 'sky' | 'accent' | 'amber' | 'slate';
   icon?: ReactNode;
-  trend?: { label: string; direction: 'up' | 'down' };
 }) => {
   const tones = {
     sky: 'text-slate-700 dark:text-slate-300',
@@ -247,7 +245,6 @@ export const StatCard = ({
     slate: 'text-slate-700 dark:text-slate-300',
   };
 
-  const trendClasses = trend?.direction === 'up' ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-300' : 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-300';
 
   return (
     <Card className={`${tones[tone]} p-5`}>
@@ -259,12 +256,6 @@ export const StatCard = ({
         </div>
         {icon ? <div className="grid h-12 w-12 place-items-center rounded-2xl bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-slate-200">{icon}</div> : null}
       </div>
-      {trend ? (
-        <div className={`mt-5 inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold ${trendClasses}`}>
-          <span>{trend.direction === 'up' ? '↑' : '↓'}</span>
-          <span>{trend.label}</span>
-        </div>
-      ) : null}
     </Card>
   );
 };

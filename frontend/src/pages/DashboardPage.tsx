@@ -121,7 +121,6 @@ export const DashboardPage = () => {
           helper="All registered students"
           tone="sky"
           icon={<UsersIcon className="h-6 w-6" />}
-          trend={{ label: '11.01% increase', direction: 'up' }}
         />
         <StatCard
           label="Total Classes"
@@ -129,7 +128,6 @@ export const DashboardPage = () => {
           helper="Active academic classes"
           tone="accent"
           icon={<CubeIcon className="h-6 w-6" />}
-          trend={{ label: '3.45% increase', direction: 'up' }}
         />
         <StatCard
           label="Male Students"
@@ -137,7 +135,6 @@ export const DashboardPage = () => {
           helper="Currently enrolled"
           tone="slate"
           icon={<GridIcon className="h-6 w-6" />}
-          trend={{ label: '9.05% decrease', direction: 'down' }}
         />
         <StatCard
           label="Female Students"
@@ -145,7 +142,6 @@ export const DashboardPage = () => {
           helper="Currently enrolled"
           tone="amber"
           icon={<CalendarIcon className="h-6 w-6" />}
-          trend={{ label: '7.4% increase', direction: 'up' }}
         />
       </div>
 
