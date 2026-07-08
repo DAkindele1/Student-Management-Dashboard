@@ -167,7 +167,7 @@ const Chart = ({
 export const DashboardPage = () => {
   const { data, isLoading, isError } = useDashboard();
   const { data: classes = [] } = useClasses();
-  const studentsQuery = useStudents({ page: 1, limit: 500, search: '' });
+  const studentsQuery = useStudents({ page: 1, limit: 50, search: '' });
   const [selectedClassId, setSelectedClassId] = useState('');
   const activityStudents = studentsQuery.data?.data ?? data?.recentStudents ?? [];
   const activityBars = useMemo(() => buildActivityData(activityStudents), [activityStudents]);

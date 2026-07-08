@@ -3,7 +3,7 @@ import { prisma } from '../prisma/client';
 import { AppError } from '../utils/AppError';
 
 type Gender = 'MALE' | 'FEMALE';
-  export const listStudents = async (params: {
+export const listStudents = async (params: {
     page: number;
     limit: number;
     search: string;
