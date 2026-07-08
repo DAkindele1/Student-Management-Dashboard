@@ -50,14 +50,6 @@ type Gender = 'MALE' | 'FEMALE';
       orderBy = { createdAt: sortOrder };
       break;
 
-    case 'class':
-      orderBy = {
-        class: {
-          name: sortOrder,
-        },
-      };
-      break;
-
     default:
       orderBy = { createdAt: 'desc' };
   }
