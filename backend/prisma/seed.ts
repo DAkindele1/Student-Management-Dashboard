@@ -23,23 +23,31 @@ async function main() {
   });
 
   const classA = await prisma.class.upsert({
-    where: { id: 'seed-class-a' },
+    where: {
+      name_section: {
+        name: "Grade 10",
+        section: "A",
+      },
+    },
     update: {},
     create: {
-      id: 'seed-class-a',
-      name: 'Grade 10',
-      section: 'A',
+      name: "Grade 10",
+      section: "A",
       capacity: 30,
     },
   });
 
   const classB = await prisma.class.upsert({
-    where: { id: 'seed-class-b' },
+    where: {
+      name_section: {
+        name: "Grade 11",
+        section: "B",
+      },
+    },
     update: {},
     create: {
-      id: 'seed-class-b',
-      name: 'Grade 11',
-      section: 'B',
+      name: "Grade 11",
+      section: "B",
       capacity: 28,
     },
   });
