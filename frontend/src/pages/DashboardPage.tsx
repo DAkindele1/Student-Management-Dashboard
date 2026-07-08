@@ -25,13 +25,21 @@ import {
   Tooltip,
 } from "recharts";
 import type { ClassRecord, StudentRecord } from '../types';
-import type { TooltipContentProps } from "recharts";
+
+type CustomTooltipProps = {
+  active?: boolean;
+  payload?: Array<{
+    value: number;
+    name: string;
+  }>;
+  label?: string;
+};
 
 const CustomTooltip = ({
   active,
   payload,
   label,
-}: TooltipContentProps<number, string>) => {
+}: CustomTooltipProps) => {
   if (!active || !payload?.length) return null;
 
   return (
