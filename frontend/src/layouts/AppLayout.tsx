@@ -137,7 +137,7 @@ export const AppLayout = () => {
         ) : null}
 
         <div className="flex min-w-0 flex-1 flex-col">
-          <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white dark:border-white/10 dark:bg-slate-950">
+          <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/85 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/85">
             <div className="flex items-center gap-4 px-4 py-4 sm:px-6 lg:px-8">
               <button type="button" className="grid h-14 w-14 place-items-center rounded-2xl border border-slate-200 bg-white text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 lg:hidden" aria-label="Open navigation" onClick={() => setIsMobileNavOpen(true)}>
                 <MenuIcon />
