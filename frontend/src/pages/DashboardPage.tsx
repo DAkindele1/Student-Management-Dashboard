@@ -11,7 +11,6 @@ import {
   EmptyState,
   GridIcon,
   LoadingState,
-  MoreVerticalIcon,
   Select,
   StatCard,
   UsersIcon,
@@ -26,6 +25,39 @@ import {
   Tooltip,
 } from "recharts";
 import type { ClassRecord, StudentRecord } from '../types';
+import type { TooltipContentProps } from "recharts";
+
+const CustomTooltip = ({
+  active,
+  payload,
+  label,
+}: TooltipContentProps<number, string>) => {
+  if (!active || !payload?.length) return null;
+
+  return (
+    <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-lg dark:border-slate-700 dark:bg-slate-900">
+      <p className="font-semibold text-slate-900 dark:text-white">
+        {label}
+      </p>
+
+      <p className="text-sky-600 dark:text-sky-400">
+        {payload[0].value} enrollments
+      </p>
+    </div>
+  );
+};
+
+const CustomCursor = ({ x, y, width, height }: any) => (
+  <rect
+    x={x}
+    y={y}
+    width={width}
+    height={height}
+    rx={8}
+    fill="currentColor"
+    className="text-sky-500/10 dark:text-sky-300/10"
+  />
+);
 
 const formatDate = (value: string) => new Date(value).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
 
@@ -133,13 +165,8 @@ const Chart = ({
           />
 
           <Tooltip
-            cursor={{ fill: "rgba(2,132,199,0.08)" }}
-            contentStyle={{
-              borderRadius: "12px",
-              border: "1px solid #e2e8f0",
-              boxShadow:
-                "0 10px 30px rgba(0,0,0,.08)",
-            }}
+            cursor={<CustomCursor />}
+            content={CustomTooltip}
           />
 
           <Bar
