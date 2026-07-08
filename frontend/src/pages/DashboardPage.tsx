@@ -152,7 +152,7 @@ const Chart = ({
           />
 
           <Bar
-            dataKey="enrollments"
+            dataKey="Enrollments"
             fill="url(#enrollmentGradient)"
             radius={[10, 10, 0, 0]}
             maxBarSize={40}
