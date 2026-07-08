@@ -157,14 +157,14 @@ export const AppLayout = () => {
               </div>
 
               <div className="ml-auto flex min-w-0 items-center justify-end gap-3">
-                <button type="button" className="hidden h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-white sm:inline-flex" aria-label="Toggle theme" onClick={toggleTheme}>
+                <button type="button" className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 sm:h-12 sm:w-12 dark:border-white/10 dark:bg-white/5 dark:text-white" aria-label="Toggle theme" onClick={toggleTheme}>
                   {isDarkMode ? <SunIcon /> : <MoonIcon />}
                 </button>
 
                 <div className="relative" ref={notificationsRef}>
                   <button
                     type="button"
-                    className="relative hidden h-12 w-12 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 sm:inline-flex"
+                    className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 sm:h-12 sm:w-12 dark:border-white/10 dark:bg-white/5 dark:text-white"
                     aria-label="Notifications"
                     aria-haspopup="menu"
                     aria-expanded={isNotificationsOpen}
