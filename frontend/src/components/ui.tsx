@@ -256,7 +256,7 @@ export const StatCard = ({
 
 
   return (
-    <Card className={`p-5`}>
+    <Card className={`transform-gpu p-5`}>
       <div className="flex items-start justify-between gap-4">
         <div>
           <div className="text-sm font-medium text-slate-500">{label}</div>
