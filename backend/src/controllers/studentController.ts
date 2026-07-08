@@ -5,8 +5,8 @@ import { paginationSchema } from '../validators/shared';
 import { createStudent, deleteStudent, getStudentById, listStudents, updateStudent } from '../services/studentService';
 
 export const getStudentsController = asyncHandler(async (req: Request, res: Response) => {
-  const { page, limit, search } = paginationSchema.parse(req.query);
-  const data = await listStudents({ page, limit, search });
+  const { page, limit, search, sortBy, sortOrder } = paginationSchema.parse(req.query);
+  const data = await listStudents({ page, limit, search, sortBy, sortOrder });
 
   res.status(200).json({ data: data.students, meta: data.meta });
 });

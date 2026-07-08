@@ -1,10 +1,22 @@
+import { Prisma } from '@prisma/client';
 import { prisma } from '../prisma/client';
 import { AppError } from '../utils/AppError';
 
 type Gender = 'MALE' | 'FEMALE';
-
-export const listStudents = async (params: { page: number; limit: number; search: string }) => {
-  const { page, limit, search } = params;
+  export const listStudents = async (params: {
+    page: number;
+    limit: number;
+    search: string;
+    sortBy?: string;
+    sortOrder?: 'asc' | 'desc';
+  }) => {
+  const {
+    page,
+    limit,
+    search,
+    sortBy = 'createdAt',
+    sortOrder = 'desc',
+  } = params;
   const skip = (page - 1) * limit;
   const where = search
     ? {
@@ -15,6 +27,40 @@ export const listStudents = async (params: { page: number; limit: number; search
         ],
       }
     : undefined;
+  let orderBy: Prisma.StudentOrderByWithRelationInput;
+
+  switch (sortBy) {
+    case 'fullName':
+      orderBy = { fullName: sortOrder };
+      break;
+
+    case 'email':
+      orderBy = { email: sortOrder };
+      break;
+
+    case 'phone':
+      orderBy = { phone: sortOrder };
+      break;
+
+    case 'gender':
+      orderBy = { gender: sortOrder };
+      break;
+
+    case 'createdAt':
+      orderBy = { createdAt: sortOrder };
+      break;
+
+    case 'class':
+      orderBy = {
+        class: {
+          name: sortOrder,
+        },
+      };
+      break;
+
+    default:
+      orderBy = { createdAt: 'desc' };
+  }
 
   const [total, students] = await Promise.all([
     prisma.student.count({ where }),
@@ -22,7 +68,7 @@ export const listStudents = async (params: { page: number; limit: number; search
       where,
       skip,
       take: limit,
-      orderBy: { createdAt: 'desc' },
+      orderBy,
       include: { class: true },
     }),
   ]);

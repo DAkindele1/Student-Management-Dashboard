@@ -10,24 +10,6 @@ import { ChevronUp, ChevronDown } from 'lucide-react';
 
 type SortDirection = 'asc' | 'desc';
 
-const [sortConfig, setSortConfig] = useState<{
-  key: string;
-  direction: SortDirection;
-}>({
-  key: 'fullName',
-  direction: 'asc',
-});
-
-const handleSort = (key: string) => {
-  setSortConfig((prev) => ({
-    key,
-    direction:
-      prev.key === key && prev.direction === 'asc'
-        ? 'desc'
-        : 'asc',
-  }));
-};
-
 const PAGE_SIZE = 8;
 
 const toDefaultValues = (student: StudentRecord) => ({
@@ -97,6 +79,23 @@ export const StudentsPage = () => {
       showToast({ tone: 'error', title: 'Delete failed', description: error instanceof Error ? error.message : 'Please try again.' });
     }
   };
+  const [sortConfig, setSortConfig] = useState<{
+  key: string;
+  direction: SortDirection;
+}>({
+  key: 'fullName',
+  direction: 'asc',
+});
+
+const handleSort = (key: string) => {
+  setSortConfig((prev) => ({
+    key,
+    direction:
+      prev.key === key && prev.direction === 'asc'
+        ? 'desc'
+        : 'asc',
+  }));
+};
 
   const sortedStudents = useMemo(() => {
   const data = [...students];
