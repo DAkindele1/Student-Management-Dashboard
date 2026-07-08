@@ -292,20 +292,20 @@ export const DashboardPage = () => {
                 <th className="px-6 py-4">Created</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 bg-white">
+            <tbody className="divide-y divide-slate-100 bg-white dark:divide-slate-700 dark:bg-slate-900">
               {data.recentStudents.map((student) => (
-                <tr key={student.id} className="hover:bg-slate-50">
-                  <td className="px-6 py-4 font-medium text-slate-900">
+                <tr key={student.id} className="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800">
+                  <td className="px-6 py-4 font-medium text-slate-900 dark:text-white">
                     <Link to={`/students/${student.id}`} className="hover:text-sky-600">
                       {student.fullName}
                     </Link>
                   </td>
-                  <td className="px-6 py-4 text-slate-600">{student.email}</td>
-                  <td className="px-6 py-4 text-slate-600">{student.class.name} - {student.class.section}</td>
+                  <td className="px-6 py-4 text-slate-600 dark:text-slate-300">{student.email}</td>
+                  <td className="px-6 py-4 text-slate-600 dark:text-slate-300">{student.class.name} - {student.class.section}</td>
                   <td className="px-6 py-4">
                     <Badge tone={student.gender === 'MALE' ? 'sky' : 'accent'}>{student.gender}</Badge>
                   </td>
-                  <td className="px-6 py-4 text-slate-600">{formatDate(student.createdAt)}</td>
+                  <td className="px-6 py-4 text-slate-600 dark:text-slate-300">{formatDate(student.createdAt)}</td>
                 </tr>
               ))}
             </tbody>

@@ -241,16 +241,16 @@ const handleSort = (key: string) => {
                   <th className="px-6 py-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 bg-white">
+              <tbody className="divide-y divide-slate-100 bg-white dark:divide-slate-700 dark:bg-slate-900">
                 {sortedStudents.map((student) => (
-                  <tr key={student.id} className="hover:bg-slate-50">
-                    <td className="px-6 py-4 font-medium text-slate-900">
+                  <tr key={student.id} className="transition-colors hover:bg-slate-50 dark:hover:bg-slate-800">
+                    <td className="px-6 py-4 font-medium text-slate-900 dark:text-white">
                       <Link className="hover:text-sky-600" to={`/students/${student.id}`}>{student.fullName}</Link>
                     </td>
-                    <td className="px-6 py-4 text-slate-600">{student.email}</td>
-                    <td className="px-6 py-4 text-slate-600">{student.phone}</td>
+                    <td className="px-6 py-4 text-slate-600 dark:text-slate-300">{student.email}</td>
+                    <td className="px-6 py-4 text-slate-600 dark:text-slate-300">{student.phone}</td>
                     <td className="px-6 py-4"><Badge tone={student.gender === 'MALE' ? 'sky' : 'accent'}>{student.gender}</Badge></td>
-                    <td className="px-6 py-4 text-slate-600">{student.class.name} - {student.class.section}</td>
+                    <td className="px-6 py-4 text-slate-600 dark:text-slate-300">{student.class.name} - {student.class.section}</td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-2">
                         <Button variant="secondary" size="sm" onClick={() => setStudentToEdit(student)}>Edit</Button>
