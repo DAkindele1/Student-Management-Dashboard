@@ -273,7 +273,7 @@ export const DashboardPage = () => {
             <h2 className="text-2xl font-semibold tracking-tight text-slate-900">Recent Students</h2>
             <p className="mt-2 text-sm text-slate-500">Latest enrolments across the system</p>
           </div>
-          <Link to="/students" className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-800 transition hover:border-slate-300 hover:bg-slate-50">
+          <Link to="/students" className="inline-flex items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-800 transition hover:border-slate-300 hover:bg-slate-50 dark:border-white/10 dark:bg-slate-950 dark:text-slate-200 dark:hover:border-white/20 dark:hover:bg-white/5">
             View all students
           </Link>
         </div>
