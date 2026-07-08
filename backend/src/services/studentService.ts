@@ -27,7 +27,7 @@ export const listStudents = async (params: {
         ],
       }
     : undefined;
-  let orderBy: Prisma.StudentOrderByWithRelationInput | Prisma.StudentOrderByWithRelationInput[];
+  let orderBy: |Prisma.StudentOrderByWithRelationInput | Prisma.StudentOrderByWithRelationInput[];
 
   switch (sortBy) {
     case 'fullName':
@@ -51,7 +51,7 @@ export const listStudents = async (params: {
       break;
 
     case 'class':
-      orderBy = { class: { name: sortOrder } }, {class: { section: sortOrder }};
+      orderBy = [{ class: { name: sortOrder } }, { class: { section: sortOrder } }];
       break;
 
     default:
