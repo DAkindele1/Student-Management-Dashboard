@@ -4,7 +4,6 @@ import { useClasses } from '../hooks/useClasses';
 import { useDashboard } from '../hooks/useDashboard';
 import { useStudents } from '../hooks/useStudents';
 import {
-  ArrowUpIcon,
   Badge,
   Card,
   CalendarIcon,
@@ -73,20 +72,59 @@ const Gauge = ({ value, className }: { value: number; className: string }) => {
 };
 
 const Chart = ({ bars }: { bars: ReturnType<typeof buildActivityBars> }) => (
-  <div className="mt-8">
-    <div className="grid h-[250px] grid-cols-12 items-end gap-4 rounded-2xl bg-slate-50 px-2 py-4 dark:bg-slate-950/70">
-      {bars.map((bar, index) => (
-        <div key={monthLabels[index]} className="flex h-full flex-col items-center justify-end gap-3">
-          <div className="flex h-full w-full items-end rounded-full bg-slate-100/70 dark:bg-white/10">
-            <div
-              className="mx-auto w-8 rounded-full bg-sky-600 dark:bg-sky-400"
-              title={`${bar.count} enrollments`}
-              style={{ height: `${bar.height}%` }}
-            />
+  <div className="mt-8 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+    <div className="mb-6 flex items-center justify-between">
+      <div>
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+          Student Enrollments
+        </h3>
+        <p className="text-sm text-slate-500">
+          Monthly enrollment activity
+        </p>
+      </div>
+    </div>
+
+    <div className="relative h-[300px]">
+      {/* Grid lines */}
+      <div className="absolute inset-0 flex flex-col justify-between">
+        {[100, 75, 50, 25, 0].map((_, i) => (
+          <div
+            key={i}
+            className="border-t border-dashed border-slate-200 dark:border-slate-700"
+          />
+        ))}
+      </div>
+
+      {/* Bars */}
+      <div className="relative grid h-full grid-cols-12 items-end gap-5">
+        {bars.map((bar, index) => (
+          <div
+            key={monthLabels[index]}
+            className="group flex h-full flex-col items-center justify-end"
+          >
+            {/* Value on hover */}
+            <span className="mb-2 opacity-0 transition-all duration-300 group-hover:-translate-y-1 group-hover:opacity-100 text-xs font-semibold text-slate-700 dark:text-slate-200">
+              {bar.count}
+            </span>
+
+            {/* Bar */}
+            <div className="flex h-full w-full items-end">
+              <div
+                className="mx-auto w-7 rounded-t-xl bg-gradient-to-t from-sky-700 via-sky-600 to-cyan-400 shadow-lg transition-all duration-300 group-hover:w-8 group-hover:brightness-110"
+                style={{
+                  height: `${Math.max(bar.height, 4)}%`,
+                }}
+                title={`${bar.count} enrollments`}
+              />
+            </div>
+
+            {/* Month */}
+            <span className="mt-3 text-xs font-medium text-slate-500 dark:text-slate-400">
+              {monthLabels[index]}
+            </span>
           </div>
-          <span className="text-sm text-slate-500 dark:text-slate-400">{monthLabels[index]}</span>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   </div>
 );
