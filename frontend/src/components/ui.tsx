@@ -246,25 +246,17 @@ export const StatCard = ({
   label,
   value,
   helper,
-  tone = 'sky',
   icon,
 }: {
   label: string;
   value: string | number;
   helper?: string;
-  tone?: 'sky' | 'accent' | 'amber' | 'slate';
   icon?: ReactNode;
 }) => {
-  const tones = {
-    sky: 'text-slate-700 dark:text-slate-300',
-    accent: 'text-slate-700 dark:text-slate-300',
-    amber: 'text-slate-700 dark:text-slate-300',
-    slate: 'text-slate-700 dark:text-slate-300',
-  };
 
 
   return (
-    <Card className={`${tones[tone]} p-5`}>
+    <Card className={`p-5`}>
       <div className="flex items-start justify-between gap-4">
         <div>
           <div className="text-sm font-medium text-slate-500">{label}</div>

@@ -191,28 +191,24 @@ export const DashboardPage = () => {
           label="Total Students"
           value={data.totalStudents}
           helper="All registered students"
-          tone="sky"
           icon={<UsersIcon className="h-6 w-6" />}
         />
         <StatCard
           label="Total Classes"
           value={data.totalClasses}
           helper="Active academic classes"
-          tone="accent"
           icon={<CubeIcon className="h-6 w-6" />}
         />
         <StatCard
           label="Male Students"
           value={data.maleStudents}
           helper="Currently enrolled"
-          tone="slate"
           icon={<MaleIcon className="h-6 w-6" />}
         />
         <StatCard
           label="Female Students"
           value={data.femaleStudents}
           helper="Currently enrolled"
-          tone="amber"
           icon={<FemaleIcon className="h-6 w-6" />}
         />
       </div>
