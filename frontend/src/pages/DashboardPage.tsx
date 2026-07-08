@@ -26,52 +26,12 @@ import {
 } from "recharts";
 import type { ClassRecord, StudentRecord } from '../types';
 
-type CustomTooltipProps = {
-  active?: boolean;
-  payload?: Array<{
-    value: number;
-    name: string;
-  }>;
-  label?: string;
-};
-
-const CustomTooltip = ({
-  active,
-  payload,
-  label,
-}: CustomTooltipProps) => {
-  if (!active || !payload?.length) return null;
-
-  return (
-    <div className="rounded-xl border border-slate-200 bg-white p-3 shadow-lg dark:border-slate-700 dark:bg-slate-900">
-      <p className="font-semibold text-slate-900 dark:text-white">
-        {label}
-      </p>
-
-      <p className="text-sky-600 dark:text-sky-400">
-        {payload[0].value} enrollments
-      </p>
-    </div>
-  );
-};
-
-const CustomCursor = ({ x, y, width, height }: any) => (
-  <rect
-    x={x}
-    y={y}
-    width={width}
-    height={height}
-    rx={8}
-    fill="currentColor"
-    className="text-sky-500/10 dark:text-sky-300/10"
-  />
-);
-
 const formatDate = (value: string) => new Date(value).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
 
 const monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 const getClassLabel = (classRecord?: ClassRecord) => (classRecord ? `${classRecord.name} - ${classRecord.section}` : 'No class selected');
+const isDark = document.documentElement.classList.contains("dark");
 
 const buildActivityData = (students: StudentRecord[]) => {
   const counts = Array(12).fill(0);
@@ -173,8 +133,22 @@ const Chart = ({
           />
 
           <Tooltip
-            cursor={<CustomCursor />}
-            content={CustomTooltip}
+            cursor={{
+              fill: isDark
+                ? "rgba(56,189,248,0.12)"
+                : "rgba(2,132,199,0.08)",
+            }}
+            contentStyle={{
+              backgroundColor: isDark ? "#0f172a" : "#ffffff",
+              border: `1px solid ${isDark ? "#334155" : "#e2e8f0"}`,
+              borderRadius: 12,
+            }}
+            labelStyle={{
+              color: isDark ? "#f8fafc" : "#0f172a",
+            }}
+            itemStyle={{
+              color: isDark ? "#7dd3fc" : "#0284c7",
+            }}
           />
 
           <Bar
