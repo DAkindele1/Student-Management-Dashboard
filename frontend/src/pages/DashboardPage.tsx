@@ -16,6 +16,15 @@ import {
   StatCard,
   UsersIcon,
 } from '../components/ui';
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+} from "recharts";
 import type { ClassRecord, StudentRecord } from '../types';
 
 const formatDate = (value: string) => new Date(value).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
@@ -24,22 +33,20 @@ const monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Se
 
 const getClassLabel = (classRecord?: ClassRecord) => (classRecord ? `${classRecord.name} - ${classRecord.section}` : 'No class selected');
 
-const buildActivityBars = (students: StudentRecord[]) => {
-  const counts = Array.from({ length: 12 }, () => 0);
+const buildActivityData = (students: StudentRecord[]) => {
+  const counts = Array(12).fill(0);
 
   students.forEach((student) => {
-    const month = new Date(student.createdAt).getMonth();
+    const date = new Date(student.createdAt);
 
-    if (!Number.isNaN(month)) {
-      counts[month] += 1;
+    if (!Number.isNaN(date.getTime())) {
+      counts[date.getMonth()]++;
     }
   });
 
-  const max = Math.max(1, ...counts);
-
-  return counts.map((count) => ({
-    count,
-    height: count === 0 ? 6 : Math.max(18, Math.round((count / max) * 100)),
+  return monthLabels.map((month, index) => ({
+    month,
+    enrollments: counts[index],
   }));
 };
 
@@ -71,60 +78,79 @@ const Gauge = ({ value, className }: { value: number; className: string }) => {
   );
 };
 
-const Chart = ({ bars }: { bars: ReturnType<typeof buildActivityBars> }) => (
+const Chart = ({
+  data,
+}: {
+  data: ReturnType<typeof buildActivityData>;
+}) => (
   <div className="mt-8 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-    <div className="mb-6 flex items-center justify-between">
-      <div>
-        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
-          Student Enrollments
-        </h3>
-        <p className="text-sm text-slate-500">
-          Monthly enrollment activity
-        </p>
-      </div>
+    <div className="mb-6">
+      <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+        Student Enrollments
+      </h3>
+
+      <p className="text-sm text-slate-500 dark:text-slate-400">
+        Monthly enrollment activity
+      </p>
     </div>
 
-    <div className="relative h-[300px]">
-      {/* Grid lines */}
-      <div className="absolute inset-0 flex flex-col justify-between">
-        {[100, 75, 50, 25, 0].map((_, i) => (
-          <div
-            key={i}
-            className="border-t border-dashed border-slate-200 dark:border-slate-700"
+    <div className="h-[320px]">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart
+          data={data}
+          margin={{
+            top: 20,
+            right: 10,
+            left: -15,
+            bottom: 0,
+          }}
+        >
+          <defs>
+            <linearGradient id="enrollmentGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#38bdf8" />
+              <stop offset="100%" stopColor="#0284c7" />
+            </linearGradient>
+          </defs>
+
+          <CartesianGrid
+            vertical={false}
+            strokeDasharray="4 4"
+            stroke="#e2e8f0"
           />
-        ))}
-      </div>
 
-      {/* Bars */}
-      <div className="relative grid h-full grid-cols-12 items-end gap-5">
-        {bars.map((bar, index) => (
-          <div
-            key={monthLabels[index]}
-            className="group flex h-full flex-col items-center justify-end"
-          >
-            {/* Value on hover */}
-            <span className="mb-2 opacity-0 transition-all duration-300 group-hover:-translate-y-1 group-hover:opacity-100 text-xs font-semibold text-slate-700 dark:text-slate-200">
-              {bar.count}
-            </span>
+          <XAxis
+            dataKey="month"
+            tickLine={false}
+            axisLine={false}
+            tick={{ fontSize: 12 }}
+          />
 
-            {/* Bar */}
-            <div className="flex h-full w-full items-end">
-              <div
-                className="mx-auto w-7 rounded-t-xl bg-gradient-to-t from-sky-700 via-sky-600 to-cyan-400 shadow-lg transition-all duration-300 group-hover:w-8 group-hover:brightness-110"
-                style={{
-                  height: `${Math.max(bar.height, 4)}%`,
-                }}
-                title={`${bar.count} enrollments`}
-              />
-            </div>
+          <YAxis
+            allowDecimals={false}
+            tickLine={false}
+            axisLine={false}
+            tick={{ fontSize: 12 }}
+          />
 
-            {/* Month */}
-            <span className="mt-3 text-xs font-medium text-slate-500 dark:text-slate-400">
-              {monthLabels[index]}
-            </span>
-          </div>
-        ))}
-      </div>
+          <Tooltip
+            cursor={{ fill: "rgba(2,132,199,0.08)" }}
+            contentStyle={{
+              borderRadius: "12px",
+              border: "1px solid #e2e8f0",
+              boxShadow:
+                "0 10px 30px rgba(0,0,0,.08)",
+            }}
+          />
+
+          <Bar
+            dataKey="enrollments"
+            fill="url(#enrollmentGradient)"
+            radius={[10, 10, 0, 0]}
+            maxBarSize={40}
+            animationDuration={800}
+          />
+        </BarChart>
+      </ResponsiveContainer>
     </div>
   </div>
 );
@@ -135,7 +161,7 @@ export const DashboardPage = () => {
   const studentsQuery = useStudents({ page: 1, limit: 500, search: '' });
   const [selectedClassId, setSelectedClassId] = useState('');
   const activityStudents = studentsQuery.data?.data ?? data?.recentStudents ?? [];
-  const activityBars = useMemo(() => buildActivityBars(activityStudents), [activityStudents]);
+  const activityBars = useMemo(() => buildActivityData(activityStudents), [activityStudents]);
   const selectedClass = useMemo(() => classes.find((classRecord) => classRecord.id === selectedClassId) ?? classes[0], [classes, selectedClassId]);
   const enrolled = selectedClass?._count?.students ?? 0;
   const capacity = selectedClass?.capacity ?? 0;
@@ -191,7 +217,7 @@ export const DashboardPage = () => {
             </div>
           </div>
 
-          <Chart bars={activityBars} />
+          <Chart data={activityBars} />
         </Card>
 
         <Card className="overflow-hidden">
