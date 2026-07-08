@@ -66,7 +66,6 @@ const Gauge = ({ value, className }: { value: number; className: string }) => {
       </svg>
       <div className="-mt-6 text-5xl font-semibold tracking-tight text-slate-900 dark:text-white">{clamped.toFixed(2)}%</div>
       <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-300">
-        <ArrowUpIcon className="h-4 w-4" />
         {className}
       </div>
     </div>
